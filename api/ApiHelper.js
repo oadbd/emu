@@ -1,22 +1,19 @@
 var fs = require('fs'),
-	events = require('events'),
-	util = require('util');
+	util = require('util'),
+    server = require('../server');
 
 function ApiError(code, message, cause) {
     this.code = code;
     this.message = message;
     this.cause = cause;
-};
-
-
-function ApiHelper() {
-	events.EventEmitter.call(this);
 }
-util.inherits(ApiHelper, events.EventEmitter);
 
-ApiHelper.prototype.init = function (app) {
-	this.emit('init', app);
-};
+
+function ApiHelper(name) {
+    server.Endpoint.call(this, name);
+    
+}
+util.inherits(ApiHelper, server.Endpoint);
 
 ApiHelper.prototype.jsonHeaders = function (data) {
     return {
@@ -41,4 +38,4 @@ ApiHelper.prototype.success = function (res, data) {
     this.send(res, code, data);
 };
 
-exports.ApiHelper = ApiHelper;
+module.exports = ApiHelper;
